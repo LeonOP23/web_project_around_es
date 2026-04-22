@@ -123,7 +123,7 @@ formElement.addEventListener("submit", handleProfileFormSubmit);
 addCardForm.addEventListener("submit", handleCardFormSubmit);
 
 //comienzo parte 3 proyecto
-function getCardElement(name = "Sin título", link = "./images/placeholder.jpg") {
+function getCardElement(name, link) {
   const cardTemplate = document.querySelector("#card-template");
   const cardElement = cardTemplate.content.cloneNode(true);
 
@@ -176,3 +176,101 @@ const cardContainer = document.querySelector(".cards__list");
 initialCards.forEach((card) => {
   renderCard(card.name, card.link, cardContainer);
 });
+
+//Comienzo parte 4 proyecto
+// Seleccionar el formulario y sus elementos
+const editForm = document.querySelector('#edit-profile-form');
+const nameInput = document.querySelector('#profile-name-input');
+const descriptionInput = document.querySelector('#profile-description-input');
+const submitButton = editForm.querySelector('.popup__button');
+
+// Formulario "Nuevo lugar"
+const newCardForm = document.querySelector('#new-card-form');
+const cardPlaceNameInput = document.querySelector('#card-name-input');
+const cardPlaceUrlInput = document.querySelector('#card-url-input');
+const cardPlaceNameError = document.querySelector('#card-name-input-error');
+const cardPlaceUrlError = document.querySelector('#card-url-input-error');
+const newCardSubmitButton = newCardForm.querySelector('.popup__button');
+
+// Seleccionar los spans de error
+const nameError = document.querySelector('#profile-name-input-error');
+const descriptionError = document.querySelector('#profile-description-input-error');
+
+function showInputError(input, errorElement, errorMessage) {
+  input.classList.add('popup__input_type_error');
+  errorElement.textContent = errorMessage;
+}
+
+function hideInputError(input, errorElement) {
+  input.classList.remove('popup__input_type_error');
+  errorElement.textContent = '';
+}
+
+function checkInputValidity(input, errorElement) {
+  if (!input.validity.valid) {
+    showInputError(input, errorElement, input.validationMessage);
+  } else {
+    hideInputError(input, errorElement);
+  }
+}
+
+function hasInvalidInput(inputList) {
+  return inputList.some((input) => {
+    return !input.validity.valid;
+  });
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add('popup__button_disabled');
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove('popup__button_disabled');
+    buttonElement.disabled = false;
+  }
+}
+
+// Event listeners para validación en tiempo real
+nameInput.addEventListener('input', () => {
+  checkInputValidity(nameInput, nameError);
+  toggleButtonState([nameInput, descriptionInput], submitButton);
+});
+
+descriptionInput.addEventListener('input', () => {
+  checkInputValidity(descriptionInput, descriptionError);
+  toggleButtonState([nameInput, descriptionInput], submitButton);
+});
+
+// Event listeners para el formulario "Nuevo lugar"
+cardPlaceNameInput.addEventListener('input', function() {
+  checkInputValidity(cardPlaceNameInput, cardPlaceNameError);
+  toggleButtonState([cardPlaceNameInput, cardPlaceUrlInput], newCardSubmitButton);
+});
+
+cardPlaceUrlInput.addEventListener('input', function() {
+  checkInputValidity(cardPlaceUrlInput, cardPlaceUrlError);
+  toggleButtonState([cardPlaceNameInput, cardPlaceUrlInput], newCardSubmitButton);
+});
+
+function handleOverlayClick(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
+}
+
+const popups = document.querySelectorAll(".popup");
+
+popups.forEach((popup) => {
+  popup.addEventListener("mousedown", handleOverlayClick);
+});
+
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
+
+document.addEventListener("keydown", handleEscClose);
