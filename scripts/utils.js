@@ -1,9 +1,11 @@
 function openModal(modal) {
   modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscClose);
 }
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscClose);
 }
 
 function handleOverlayClick(evt) {
@@ -25,6 +27,5 @@ function handleEscClose(evt) {
 export {
   openModal,
   closeModal,
-  handleOverlayClick,
-  handleEscClose
+  handleOverlayClick
 };

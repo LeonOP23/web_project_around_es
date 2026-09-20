@@ -3,10 +3,8 @@ import FormValidator from "./FormValidator.js";
 import {
   openModal,
   closeModal,
-  handleOverlayClick,
-  handleEscClose
+  handleOverlayClick
 } from "./utils.js";
-
 
 /*TARJETAS INICIALES*/
 
@@ -37,7 +35,6 @@ const initialCards = [
   }
 ];
 
-
 /*ELEMENTOS DEL PERFIL*/
 
 const editButton = document.querySelector(".profile__edit-button");
@@ -57,9 +54,7 @@ const popupTypeDescription = document.querySelector(
 
 const editForm = document.querySelector("#edit-profile-form");
 
-
 /*ELEMENTOS DEL POPUP "AGREGAR UNA TARJETA"*/
-
 
 const addButton = document.querySelector(".profile__add-button");
 const addPopup = document.querySelector("#new-card-popup");
@@ -75,7 +70,6 @@ const cardLinkInput = document.querySelector(
   "#card-url-input"
 );
 
-
 /*POPUP DE IMAGEN*/
 
 const imagePopup = document.querySelector("#image-popup");
@@ -84,12 +78,9 @@ const imagePopupCloseButton = imagePopup.querySelector(
   ".popup__close"
 );
 
-
 /*CONTENEDOR DE TARJETAS*/
 
-
 const cardContainer = document.querySelector(".cards__list");
-
 
 /*EDITAR PERFIL*/
 
@@ -115,7 +106,6 @@ function handleProfileFormSubmit(evt) {
   closeModal(editPopup);
 }
 
-
 /*AGREGAR UNA NUEVA TARJETA*/
 
 function handleCardFormSubmit(evt) {
@@ -134,8 +124,8 @@ function handleCardFormSubmit(evt) {
   closeModal(addPopup);
 
   addCardForm.reset();
+  newCardFormValidator.resetValidation();
 }
-
 
 /*EVENTOS DE LOS POPUPS*/
 
@@ -162,7 +152,6 @@ imagePopupCloseButton.addEventListener("click", () => {
   closeModal(imagePopup);
 });
 
-
 /*EVENTOS DE LOS FORMULARIOS*/
 
 editForm.addEventListener(
@@ -175,7 +164,6 @@ addCardForm.addEventListener(
   handleCardFormSubmit
 );
 
-
 /*CREAR LAS TARJETAS INICIALES*/
 
 initialCards.forEach((cardData) => {
@@ -183,7 +171,6 @@ initialCards.forEach((cardData) => {
 
   cardContainer.prepend(card.getView());
 });
-
 
 /*CONFIGURACIÓN DE VALIDACIÓN*/
 
@@ -194,7 +181,6 @@ const validationConfig = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible"
 };
-
 
 /*CREAR INSTANCIAS DE FORMVALIDATOR*/
 
@@ -208,12 +194,10 @@ const newCardFormValidator = new FormValidator(
   addCardForm
 );
 
-
 /*ACTIVAR VALIDACIÓN*/
 
 editFormValidator.setEventListeners();
 newCardFormValidator.setEventListeners();
-
 
 /*CERRAR POPUPS AL HACER CLICK EN EL OVERLAY*/
 
@@ -222,8 +206,3 @@ const popups = document.querySelectorAll(".popup");
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", handleOverlayClick);
 });
-
-
-/*CERRAR POPUP CON LA TECLA ESCAPE*/
-
-document.addEventListener("keydown", handleEscClose);

@@ -47,7 +47,9 @@ class Card {
   }
 
   getView() {
-    this._element = this._getTemplate();
+    const template = this._getTemplate();
+
+    this._element = template.querySelector(".card");
 
     this._cardTitle = this._element.querySelector(".card__title");
     this._cardImage = this._element.querySelector(".card__image");
@@ -60,7 +62,7 @@ class Card {
 
     this._setEventListeners();
 
-    return this._element;
+    return template;
   }
 }
 
